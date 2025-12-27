@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+
+# Examples Output
+results/
+
+# IDEs
+.vscode/
+.idea/
+*.swp

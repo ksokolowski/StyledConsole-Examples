@@ -1,0 +1,14 @@
+[project]
+name = "styledconsole-examples"
+version = "0.1.0"
+description = "A visual laboratory for StyledConsole, demonstrating rich terminal features and best practices."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+dependencies = [
+    "styledconsole>=0.9.8b1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
