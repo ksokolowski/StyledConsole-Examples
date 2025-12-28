@@ -16,9 +16,17 @@ def measure_visual_width_terminal(s: str) -> int | None:
     import termios
     import tty
 
+    # Check if stdin is a TTY
+    if not sys.stdin.isatty():
+        return None
+
     # Save terminal settings
     fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
+    try:
+        old_settings = termios.tcgetattr(fd)
+    except termios.error:
+        # Not a valid terminal
+        return None
 
     try:
         # Set terminal to raw mode
@@ -62,7 +70,12 @@ def main():
     print("=" * 50)
     print()
     print("This measures actual cursor position after printing.")
-    print("Press Enter after each measurement...\n")
+
+    if not sys.stdin.isatty():
+        print("\n⚠️  WARNING: No TTY detected. Actual measurements will not be available.")
+        print("Run this script in an interactive terminal for full functionality.\n")
+    else:
+        print("Press Enter after each measurement...\n")
 
     from styledconsole.utils.text import visual_width
 
@@ -82,9 +95,12 @@ def main():
     for s in test_cases:
         calc = visual_width(s)
         actual = measure_visual_width_terminal(s)
-        match = "✓" if calc == actual else "✗"
+        if actual is None:
+            match = "N/A"
+        else:
+            match = "✓" if calc == actual else "✗"
         display = s if len(s) < 20 else s[:17] + "..."
-        print(f"{display:<25} {calc:<12} {actual or '?':<10} {match}")
+        print(f"{display:<25} {calc:<12} {actual or 'N/A':<10} {match}")
 
     print("\n" + "=" * 50)
 

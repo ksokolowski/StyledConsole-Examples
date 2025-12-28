@@ -6,7 +6,7 @@ __pycache__/
 .env
 
 # Examples Output
-results/
+/results/
 
 # IDEs
 .vscode/
