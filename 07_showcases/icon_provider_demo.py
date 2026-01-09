@@ -12,7 +12,7 @@ Features shown:
 - Various icon categories
 """
 
-from styledconsole import Console, get_icon_mode, icons, set_icon_mode
+from styledconsole import Console, EffectSpec, get_icon_mode, icons, set_icon_mode
 
 console = Console()
 
@@ -127,7 +127,7 @@ Activity:  {icons.BULLSEYE} {icons.TROPHY} {icons.PARTY_POPPER} {icons.WRAPPED_G
 
 def main() -> None:
     """Run all demos."""
-    console.banner("Icon Provider", font="small", start_color="cyan", end_color="blue")
+    console.banner("Icon Provider", font="small", effect=EffectSpec.gradient("cyan", "blue"))
     console.text("")
 
     demo_auto_mode()

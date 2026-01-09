@@ -11,14 +11,14 @@ The context manager is recommended for most use cases as it:
 - Automatically handles frame capture and rendering
 """
 
-from styledconsole import Console, StyleContext, icons
+from styledconsole import Console, EffectSpec, StyleContext, icons
 
 
 def demo_context_manager_basic():
     """Basic context manager usage - the recommended approach."""
     console = Console()
 
-    console.banner("CONTEXT MANAGER", font="slant", start_color="cyan", end_color="magenta")
+    console.banner("CONTEXT MANAGER", font="slant", effect=EffectSpec.gradient("cyan", "magenta"))
     console.newline()
 
     # Simple group with context manager
@@ -119,16 +119,14 @@ def demo_nested_render_frame():
     depth_frame = console.render_frame(
         ["Cyan → Blue (Depth)", "", soul_frame],
         border="thick",
-        border_gradient_start="cyan",
-        border_gradient_end="blue",
+        effect=EffectSpec.gradient("cyan", "blue", target="border"),
         width=34,
     )
 
     growth_frame = console.render_frame(
         ["Yellow → Green (Growth)", "", depth_frame],
         border="rounded",
-        border_gradient_start="yellow",
-        border_gradient_end="green",
+        effect=EffectSpec.gradient("yellow", "green", target="border"),
         width=44,
     )
 
@@ -143,8 +141,7 @@ def demo_nested_render_frame():
         style=StyleContext(
             title=f"{icons.CLASSICAL_BUILDING} Nested Gradients",
             border_style="heavy",
-            border_gradient_start="red",
-            border_gradient_end="magenta",
+            effect=EffectSpec.gradient("red", "magenta", target="border"),
             align="center",
             width=60,
         ),

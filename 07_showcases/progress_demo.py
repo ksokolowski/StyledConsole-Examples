@@ -7,13 +7,13 @@ with theme integration.
 
 import time
 
-from styledconsole import THEMES, Console, icons
+from styledconsole import THEMES, Console, EffectSpec, icons
 
 
 def main() -> None:
     """Demonstrate progress bar functionality."""
     console = Console()
-    console.banner("PROGRESS", font="slant", start_color="cyan", end_color="blue")
+    console.banner("PROGRESS", font="slant", effect=EffectSpec.gradient("cyan", "blue"))
     console.text("")
 
     # Basic progress bar

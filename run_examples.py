@@ -6,7 +6,7 @@ StyledConsole Examples Runner
 A robust example runner that executes all StyledConsole examples in organized categories.
 
 Features:
-- Organized by category (core, frames, gradients, banners, usecases, validation)
+- Organized by numbered category (01-09)
 - Interactive mode with pauses between examples
 - Auto mode for continuous execution
 - Category filtering (run specific categories only)
@@ -22,23 +22,13 @@ Usage:
     python run_examples.py --auto
 
     # Run specific categories only
-    python run_examples.py --categories core,frames
+    python run_examples.py --categories 01_quickstart,04_effects
 
-    # Run in fast mode (skip validation examples)
+    # Run in fast mode (skip testing examples)
     python run_examples.py --fast
 
     # List available categories
     python run_examples.py --list
-
-Examples:
-    # Interactive mode (default)
-    python run_examples.py
-
-    # Auto mode
-    python run_examples.py --auto
-
-    # Run only core and usecases
-    python run_examples.py --categories core,usecases --auto
 """
 
 import argparse
@@ -51,14 +41,9 @@ from typing import List
 
 
 def check_styledconsole_installed() -> bool:
-    """Check if styledconsole is installed and importable.
-
-    Returns:
-        True if styledconsole is available, False otherwise
-    """
+    """Check if styledconsole is installed and importable."""
     try:
         import styledconsole
-
         return True
     except ImportError:
         return False
@@ -69,29 +54,16 @@ def print_installation_instructions() -> None:
     print("\n" + "=" * 80)
     print("❌ ERROR: StyledConsole is not installed".center(80))
     print("=" * 80 + "\n")
-
     print("The examples require the 'styledconsole' package to be installed.\n")
-
     print("📦 Installation Options:\n")
-
-    print("Option 1: Install using pip")
-    print("  pip install styledconsole")
-    print()
-
-    print("Option 2: Install using uv (recommended for development)")
-    print("  uv pip install styledconsole")
-    print()
-
-    print("Option 3: Install from this repository's dependencies")
-    print("  uv sync")
-    print("  # or")
-    print("  pip install -e .")
-    print()
-
-    print("Option 4: Use the Makefile")
+    print("Option 1: Use the Makefile")
     print("  make setup")
     print()
-
+    print("Option 2: Install manually")
+    print("  uv pip install -e ../StyledConsole")
+    print("  # or")
+    print("  pip install -e ../StyledConsole")
+    print()
     print("💡 After installation, run this script again to execute examples.")
     print("\n" + "=" * 80 + "\n")
 
@@ -99,7 +71,6 @@ def print_installation_instructions() -> None:
 @dataclass
 class ExampleCategory:
     """Represents a category of examples."""
-
     name: str
     path: Path
     description: str
@@ -110,7 +81,6 @@ class ExampleCategory:
 @dataclass
 class ExampleResult:
     """Result of running an example."""
-
     path: Path
     category: str
     success: bool
@@ -122,12 +92,7 @@ class ExamplesRunner:
     """Manages and executes StyledConsole examples."""
 
     def __init__(self, examples_root: Path, auto_mode: bool = False):
-        """Initialize the examples runner.
-
-        Args:
-            examples_root: Root directory containing example categories
-            auto_mode: If True, run without pauses between examples
-        """
+        """Initialize the examples runner."""
         self.examples_root = examples_root
         self.auto_mode = auto_mode
         self.results: List[ExampleResult] = []
@@ -135,46 +100,67 @@ class ExamplesRunner:
         # Define categories with priority (lower = run first)
         self.categories = [
             ExampleCategory(
-                name="core",
-                path=examples_root / "core",
-                description="Core Features - Icon Provider, Render Policy, Animation, Progress",
-                icon="⚙️",
+                name="01_quickstart",
+                path=examples_root / "01_quickstart",
+                description="Getting Started - First steps with StyledConsole",
+                icon="🚀",
                 priority=1,
             ),
             ExampleCategory(
-                name="frames",
-                path=examples_root / "frames",
+                name="02_frames",
+                path=examples_root / "02_frames",
                 description="Frame System - Borders, Nesting, Margins, Styles",
                 icon="🖼️",
                 priority=2,
             ),
             ExampleCategory(
-                name="gradients",
-                path=examples_root / "gradients",
-                description="Gradient Effects - Rainbow, Nested, Animated",
-                icon="🌈",
+                name="03_content",
+                path=examples_root / "03_content",
+                description="Content Elements - Tables, Text, Rules",
+                icon="📝",
                 priority=3,
             ),
             ExampleCategory(
-                name="banners",
-                path=examples_root / "banners",
-                description="ASCII Art Banners - Welcome Screens, Dashboards",
-                icon="🔤",
+                name="04_effects",
+                path=examples_root / "04_effects",
+                description="Visual Effects - Gradients, Palettes, Animation",
+                icon="🌈",
                 priority=4,
             ),
             ExampleCategory(
-                name="usecases",
-                path=examples_root / "usecases",
-                description="Real-World Use Cases - CLI Menus, Logs, Alerts, Tables",
-                icon="💼",
+                name="05_banners",
+                path=examples_root / "05_banners",
+                description="ASCII Art Banners - Welcome Screens, Dashboards",
+                icon="🔤",
                 priority=5,
             ),
             ExampleCategory(
-                name="validation",
-                path=examples_root / "validation",
-                description="Validation & Testing - Terminal Compatibility, Benchmarks",
-                icon="🧪",
+                name="06_advanced",
+                path=examples_root / "06_advanced",
+                description="Advanced Features - Policies, JSON Layouts",
+                icon="⚙️",
                 priority=6,
+            ),
+            ExampleCategory(
+                name="07_showcases",
+                path=examples_root / "07_showcases",
+                description="Feature Showcases - Icons, Emoji, Progress",
+                icon="✨",
+                priority=7,
+            ),
+            ExampleCategory(
+                name="08_applications",
+                path=examples_root / "08_applications",
+                description="Real-World Applications - CLI Menus, Logs, Alerts",
+                icon="💼",
+                priority=8,
+            ),
+            ExampleCategory(
+                name="09_testing",
+                path=examples_root / "09_testing",
+                description="Testing & Validation - Benchmarks, Compatibility",
+                icon="🧪",
+                priority=9,
             ),
         ]
 
@@ -187,30 +173,26 @@ class ExamplesRunner:
         for category in sorted(self.categories, key=lambda c: c.priority):
             example_files = self._get_example_files(category)
             count = len(example_files)
+            exists = "✅" if category.path.exists() else "❌"
 
-            print(f"{category.icon}  {category.name.upper()}")
+            print(f"{category.icon}  {category.name}")
             print(f"   {category.description}")
-            print(f"   Examples: {count}")
+            print(f"   Examples: {count} {exists}")
             print()
 
         print("=" * 80 + "\n")
 
-    def run_all(self, selected_categories: List[str] = None, skip_validation: bool = False) -> None:
-        """Run all examples in sequence.
-
-        Args:
-            selected_categories: List of category names to run. If None, run all.
-            skip_validation: If True, skip validation category
-        """
+    def run_all(self, selected_categories: List[str] = None, skip_testing: bool = False) -> None:
+        """Run all examples in sequence."""
         # Filter categories
         categories_to_run = []
         for category in sorted(self.categories, key=lambda c: c.priority):
             if selected_categories and category.name not in selected_categories:
                 continue
-            if skip_validation and category.name == "validation":
+            if skip_testing and category.name == "09_testing":
                 continue
             if not category.path.exists():
-                print(f"⚠️  Warning: Category '{category.name}' not found at {category.path}")
+                print(f"⚠️  Warning: Category '{category.name}' not found")
                 continue
             categories_to_run.append(category)
 
@@ -248,17 +230,11 @@ class ExamplesRunner:
         print("Categories to run:")
         for category in categories:
             example_files = self._get_example_files(category)
-            print(f"  {category.icon} {category.name.title()}: {len(example_files)} examples")
+            print(f"  {category.icon} {category.name}: {len(example_files)} examples")
         print()
 
     def _run_category(self, category: ExampleCategory, category_num: int, total_categories: int) -> None:
-        """Run all examples in a category.
-
-        Args:
-            category: Category to run
-            category_num: Current category number
-            total_categories: Total number of categories
-        """
+        """Run all examples in a category."""
         example_files = self._get_example_files(category)
 
         if not example_files:
@@ -267,7 +243,7 @@ class ExamplesRunner:
 
         # Print category header
         print("\n" + "=" * 80)
-        print(f"{category.icon}  CATEGORY {category_num}/{total_categories}: {category.name.upper()}".center(80))
+        print(f"{category.icon}  CATEGORY {category_num}/{total_categories}: {category.name}".center(80))
         print("=" * 80)
         print(f"{category.description}".center(80))
         print("=" * 80 + "\n")
@@ -279,14 +255,7 @@ class ExamplesRunner:
     def _run_example(
         self, example_path: Path, category: str, example_num: int, total_examples: int
     ) -> None:
-        """Run a single example file.
-
-        Args:
-            example_path: Path to the example file
-            category: Category name
-            example_num: Current example number within category
-            total_examples: Total examples in category
-        """
+        """Run a single example file."""
         print(f"\n📝 [{example_num}/{total_examples}] {category}/{example_path.name}")
         print("-" * 80)
 
@@ -295,10 +264,9 @@ class ExamplesRunner:
         error_message = ""
 
         try:
-            # Find the main StyledConsole repository (one level up from Examples repo)
+            # Find the main StyledConsole repository
             main_repo = self.examples_root.parent / "StyledConsole"
 
-            # Run the example using uv run from the main repository if it exists
             if main_repo.exists() and (main_repo / "pyproject.toml").exists():
                 # Use uv run from the main repository context
                 result = subprocess.run(
@@ -306,10 +274,10 @@ class ExamplesRunner:
                     capture_output=False,
                     text=True,
                     check=True,
-                    cwd=main_repo,  # Run from main repo to access installed package
+                    cwd=main_repo,
                 )
             else:
-                # Fallback to regular python execution (for standalone Examples repo)
+                # Fallback to regular python execution
                 result = subprocess.run(
                     [sys.executable, str(example_path)],
                     capture_output=False,
@@ -374,18 +342,11 @@ class ExamplesRunner:
                 sys.exit(0)
 
     def _get_example_files(self, category: ExampleCategory) -> List[Path]:
-        """Get all example files in a category.
-
-        Args:
-            category: Category to get files from
-
-        Returns:
-            Sorted list of example file paths
-        """
+        """Get all example files in a category."""
         if not category.path.exists():
             return []
 
-        # Get all .py files, excluding __init__.py and test files starting with test_
+        # Get all .py files, excluding __init__.py and files starting with _
         files = [
             f
             for f in category.path.glob("*.py")
@@ -395,142 +356,97 @@ class ExamplesRunner:
         return sorted(files)
 
     def _print_summary(self, total_duration: float, interrupted: bool = False) -> None:
-        """Print execution summary.
-
-        Args:
-            total_duration: Total execution time in seconds
-            interrupted: Whether execution was interrupted
-        """
+        """Print execution summary."""
         print("\n" + "=" * 80)
-        if interrupted:
-            print("⚠️  EXAMPLES RUNNER INTERRUPTED".center(80))
-        else:
-            print("🎉 EXAMPLES SHOWCASE COMPLETED".center(80))
+        print("📊 EXECUTION SUMMARY".center(80))
         print("=" * 80 + "\n")
 
-        # Statistics
-        total = len(self.results)
+        if interrupted:
+            print("⚠️  Execution was interrupted\n")
+
+        # Count results
         successful = sum(1 for r in self.results if r.success)
-        failed = total - successful
+        failed = sum(1 for r in self.results if not r.success)
+        total = len(self.results)
 
-        print(f"📊 Statistics:")
-        print(f"   Total examples run: {total}")
-        print(f"   Successful: {successful} ✅")
-        print(f"   Failed: {failed} ❌")
-        print(f"   Total duration: {total_duration:.2f}s")
+        print(f"Total examples run: {total}")
+        print(f"Successful: {successful} ✅")
+        print(f"Failed: {failed} ❌")
+        print(f"Total duration: {total_duration:.2f}s")
+        print()
 
-        if total > 0:
-            avg_duration = sum(r.duration for r in self.results) / total
-            print(f"   Average duration: {avg_duration:.2f}s")
-
-        # Category breakdown
-        if self.results:
-            print(f"\n📁 By Category:")
-            categories_seen = {}
-            for result in self.results:
-                if result.category not in categories_seen:
-                    categories_seen[result.category] = {"total": 0, "success": 0}
-                categories_seen[result.category]["total"] += 1
-                if result.success:
-                    categories_seen[result.category]["success"] += 1
-
-            for category, stats in sorted(categories_seen.items()):
-                icon = next((c.icon for c in self.categories if c.name == category), "📂")
-                status = "✅" if stats["success"] == stats["total"] else "⚠️"
-                print(
-                    f"   {icon} {category.title()}: {stats['success']}/{stats['total']} {status}"
-                )
-
-        # Failed examples detail
+        # Print failures if any
         if failed > 0:
-            print(f"\n❌ Failed Examples:")
+            print("Failed examples:")
             for result in self.results:
                 if not result.success:
-                    print(f"   - {result.category}/{result.path.name}")
+                    print(f"  ❌ {result.category}/{result.path.name}")
                     if result.error_message:
-                        print(f"     Error: {result.error_message}")
+                        print(f"     {result.error_message}")
+            print()
 
-        print("\n" + "=" * 80 + "\n")
+        print("=" * 80 + "\n")
 
 
 def main():
     """Main entry point."""
-    # Check if styledconsole is installed (unless just listing)
-    # Skip check if we can find the main StyledConsole repository with uv
-    if "--list" not in sys.argv and "-l" not in sys.argv:
-        examples_root = Path(__file__).parent
-        main_repo = examples_root.parent / "StyledConsole"
-        has_main_repo = main_repo.exists() and (main_repo / "pyproject.toml").exists()
-
-        if not has_main_repo and not check_styledconsole_installed():
-            print_installation_instructions()
-            sys.exit(1)
-
     parser = argparse.ArgumentParser(
-        description="StyledConsole Examples Runner - Execute examples in organized categories",
+        description="Run StyledConsole examples",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s                                 # Run all examples interactively
-  %(prog)s --auto                          # Run all examples without pauses
-  %(prog)s --categories core,frames        # Run only core and frames
-  %(prog)s --fast                          # Skip validation examples
-  %(prog)s --list                          # List available categories
-        """,
     )
 
     parser.add_argument(
         "--auto",
-        "-a",
         action="store_true",
-        help="Auto mode: run without pauses between examples",
+        help="Run without pauses between examples",
     )
 
     parser.add_argument(
         "--categories",
-        "-c",
         type=str,
-        help="Comma-separated list of categories to run (e.g., 'core,frames,usecases')",
+        help="Comma-separated list of categories to run (e.g., 01_quickstart,04_effects)",
     )
 
     parser.add_argument(
         "--fast",
-        "-f",
         action="store_true",
-        help="Fast mode: skip validation examples",
+        help="Skip testing examples (09_testing)",
     )
 
     parser.add_argument(
         "--list",
-        "-l",
         action="store_true",
         help="List available categories and exit",
     )
 
     args = parser.parse_args()
 
-    # Determine examples root
-    examples_root = Path(__file__).parent.resolve()
+    # Determine examples root directory
+    examples_root = Path(__file__).parent
 
     # Create runner
     runner = ExamplesRunner(examples_root, auto_mode=args.auto)
 
-    # List mode
+    # List categories if requested
     if args.list:
         runner.list_categories()
         return
 
-    # Parse categories
+    # Check if styledconsole is installed
+    if not check_styledconsole_installed():
+        print_installation_instructions()
+        sys.exit(1)
+
+    # Parse categories if provided
     selected_categories = None
     if args.categories:
         selected_categories = [c.strip() for c in args.categories.split(",")]
 
     # Run examples
-    try:
-        runner.run_all(selected_categories=selected_categories, skip_validation=args.fast)
-    except KeyboardInterrupt:
-        print("\n\n⚠️  Interrupted by user")
-        sys.exit(0)
+    runner.run_all(
+        selected_categories=selected_categories,
+        skip_testing=args.fast,
+    )
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 🏛️ Nested Gradient Architecture Showcase
 
 Demonstrates the power of StyledConsole's rendering engine by nesting
-multiple frames with independent gradient borders.
+multiple frames with independent gradient borders using the modern effect= API.
 
 Structure:
 1. Fire Layer (Outer)
@@ -12,7 +12,7 @@ Structure:
 4. Soul Layer (Inner)
 """
 
-from styledconsole import Console
+from styledconsole import Console, EffectSpec
 
 console = Console()
 
@@ -30,9 +30,12 @@ def main():
         align="center",
         width=50,
         padding=1,
-        border_gradient_start="#E6E6FA",  # Lavender
-        border_gradient_end="#9370DB",  # Medium Purple
-        border_gradient_direction="vertical",
+        effect=EffectSpec.gradient(
+            "#E6E6FA",  # Lavender
+            "#9370DB",  # Medium Purple
+            direction="vertical",
+            target="border"
+        ),
     )
 
     # 3. Depth Layer
@@ -48,9 +51,12 @@ def main():
         align="center",
         width=58,
         padding=1,
-        border_gradient_start="#4169E1",  # Royal Blue
-        border_gradient_end="#000080",  # Navy
-        border_gradient_direction="vertical",
+        effect=EffectSpec.gradient(
+            "#4169E1",  # Royal Blue
+            "#000080",  # Navy
+            direction="vertical",
+            target="border"
+        ),
     )
 
     # 2. Growth Layer
@@ -66,9 +72,12 @@ def main():
         align="center",
         width=66,
         padding=1,
-        border_gradient_start="#90EE90",  # Light Green
-        border_gradient_end="#006400",  # Dark Green
-        border_gradient_direction="vertical",
+        effect=EffectSpec.gradient(
+            "#90EE90",  # Light Green
+            "#006400",  # Dark Green
+            direction="vertical",
+            target="border"
+        ),
     )
 
     # 1. Fire Layer (Outermost)
@@ -85,9 +94,12 @@ def main():
         align="center",
         width=76,
         padding=2,
-        border_gradient_start="#FF4500",  # Orange Red
-        border_gradient_end="#8B0000",  # Dark Red
-        border_gradient_direction="vertical",
+        effect=EffectSpec.gradient(
+            "#FF4500",  # Orange Red
+            "#8B0000",  # Dark Red
+            direction="vertical",
+            target="border"
+        ),
     )
 
     console.newline(2)

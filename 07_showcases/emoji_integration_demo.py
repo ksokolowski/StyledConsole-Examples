@@ -13,7 +13,7 @@ optional `emoji` package integration. It showcases:
 Run: uv run python examples/demos/emoji_integration_demo.py
 """
 
-from styledconsole import EMOJI, Console
+from styledconsole import EMOJI, Console, EffectSpec
 
 # Import emoji_support utilities
 from styledconsole.utils.emoji_support import (
@@ -225,7 +225,7 @@ def demo_emoji_extraction():
 
 def main():
     """Run all demos."""
-    console.banner("EMOJI INTEGRATION", font="slant", start_color="cyan", end_color="magenta")
+    console.banner("EMOJI INTEGRATION", font="slant", effect=EffectSpec.gradient("cyan", "magenta"))
     console.text("")
 
     demo_package_status()
