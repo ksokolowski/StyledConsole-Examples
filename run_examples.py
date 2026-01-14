@@ -162,6 +162,13 @@ class ExamplesRunner:
                 icon="🧪",
                 priority=9,
             ),
+            ExampleCategory(
+                name="10_v010_api",
+                path=examples_root / "10_v010_api",
+                description="v0.10 API - Builder, Model, Renderer, Declarative",
+                icon="🆕",
+                priority=10,
+            ),
         ]
 
     def list_categories(self) -> None:

@@ -3,8 +3,9 @@
 This repository is a visual laboratory for [StyledConsole](https://github.com/ksokolowski/StyledConsole). It demonstrates rich terminal features, advanced layouts, and best practices for creating beautiful command-line interfaces.
 
 **Latest Updates:**
-- ✅ Reorganized into 9 numbered categories
-- ✅ Updated to use modern `effect=` API (v0.9.9.4+)
+- ✅ Added v0.10.0 API examples (`10_v010_api/` category)
+- ✅ Reorganized into 10 numbered categories
+- ✅ Updated to use modern `effect=` API (v0.10.0+)
 - ✅ Integrated 90 curated color palettes
 - ✅ Support for 1,347 color names (CSS4 + Rich + Extended)
 - ✅ Removed deprecated API usage
@@ -94,6 +95,19 @@ StyledConsole-Examples/
     ├── test_*.py (various tests)
     ├── visual_alignment.py
     └── visual_stress_test.py
+
+├── 10_v010_api/        # 🆕 v0.10 API Examples (12 examples)
+│   ├── builder_pattern.py     # FrameBuilder, BannerBuilder, TableBuilder
+│   ├── model_objects.py       # Frame, Text, Style, Layout models
+│   ├── declarative_syntax.py  # render_dict(), normalize(), shorthand
+│   ├── jinja_templates.py     # render_jinja(), custom filters
+│   ├── yaml_config.py         # YAML-driven UIs
+│   ├── json_config.py         # JSON configuration
+│   ├── templates.py           # Built-in template system
+│   ├── dynamic_ui.py          # Dynamic UI generation
+│   ├── mixed_workflows.py     # Combining approaches
+│   ├── migration_guide.py     # v0.9 to v0.10 migration
+│   └── config_dashboard.py    # Config-driven dashboard
 ```
 
 ## 📖 Key Examples
