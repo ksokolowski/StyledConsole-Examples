@@ -1,0 +1,29 @@
+# Application Layout
+# Main application structure with header, content, and footer
+
+type: layout
+direction: vertical
+gap: 1
+children:
+  # Header
+  - type: layout
+    direction: vertical
+    gap: 0
+    children:
+      - banner: ${app_name}
+        font: small
+        effect: ${header_effect}
+      - frame: "${tagline}"
+        effect: ${accent_effect}
+        border: rounded
+
+  # Main content area
+  - frame: |
+      ${main_content}
+    title: "${content_title}"
+    effect: ${content_effect}
+    border: "${border_style}"
+
+  # Footer
+  - type: text
+    content: "${footer_text}"

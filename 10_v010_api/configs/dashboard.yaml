@@ -1,0 +1,39 @@
+# Dashboard Configuration
+# This YAML file defines a complete monitoring dashboard
+
+# Reusable effect definitions (YAML anchors)
+effects:
+  healthy: &healthy_effect ocean
+  warning: &warning_effect sunset
+  critical: &critical_effect fire
+
+# Main layout
+type: layout
+direction: vertical
+gap: 1
+children:
+  # Header banner
+  - banner: MONITOR
+    font: small
+    effect: rainbow
+
+  # System metrics panel
+  - frame: |
+      CPU:     ${cpu}
+      Memory:  ${memory}
+      Disk:    ${disk}
+      Network: ${network}
+    title: System Metrics
+    effect: ${metrics_effect}
+    border: rounded
+
+  # Service status
+  - frame: ${services}
+    title: "Services (${service_count} total)"
+    effect: ${services_effect}
+
+  # Recent events
+  - frame: ${events}
+    title: Recent Events
+    effect: steel
+    border: minimal

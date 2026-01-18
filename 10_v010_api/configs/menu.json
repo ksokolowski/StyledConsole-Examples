@@ -1,0 +1,28 @@
+{
+  "type": "frame",
+  "title": "${menu_title:Main Menu}",
+  "border": "rounded",
+  "effect": "steel",
+  "content": {
+    "type": "layout",
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "text",
+        "content": "[1] ${option_1:Dashboard}"
+      },
+      {
+        "type": "text",
+        "content": "[2] ${option_2:Settings}"
+      },
+      {
+        "type": "text",
+        "content": "[3] ${option_3:Reports}"
+      },
+      {
+        "type": "text",
+        "content": "[4] ${option_4:Exit}"
+      }
+    ]
+  }
+}

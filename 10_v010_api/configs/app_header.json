@@ -1,0 +1,18 @@
+{
+  "type": "layout",
+  "direction": "vertical",
+  "gap": 1,
+  "children": [
+    {
+      "banner": "MYAPP",
+      "font": "small",
+      "effect": "rainbow"
+    },
+    {
+      "frame": "Welcome to MyApp - Your productivity companion",
+      "title": "v2.0.0",
+      "effect": "ocean",
+      "border": "rounded"
+    }
+  ]
+}

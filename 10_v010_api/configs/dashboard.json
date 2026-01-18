@@ -1,0 +1,34 @@
+{
+  "type": "layout",
+  "direction": "vertical",
+  "gap": 1,
+  "children": [
+    {
+      "frame": {
+        "type": "layout",
+        "direction": "vertical",
+        "children": [
+          {
+            "type": "text",
+            "content": "CPU: ${cpu_usage}"
+          },
+          {
+            "type": "text",
+            "content": "Memory: ${memory_usage}"
+          },
+          {
+            "type": "text",
+            "content": "Disk: ${disk_usage}"
+          }
+        ]
+      },
+      "title": "System Metrics",
+      "effect": "steel"
+    },
+    {
+      "frame": "${status_message}",
+      "title": "Status",
+      "effect": "${status_effect}"
+    }
+  ]
+}

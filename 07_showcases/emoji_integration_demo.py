@@ -129,6 +129,7 @@ def demo_safety_analysis():
         "Mixed: 🎉 and 👨‍💻",
     ]
 
+    lines = []
     for text in test_texts:
         result = analyze_emoji_safety(text)
         safe_status = (
@@ -137,14 +138,22 @@ def demo_safety_analysis():
             else f"{EMOJI.WARNING} Contains unsafe"
         )
 
-        console.text(f'"{text}"', bold=True)
-        console.text(
+        # Use markup for bold since we are rendering string content
+        lines.append(f'[bold]"{text}"[/bold]')
+        lines.append(
             f"  Emojis: {result['emoji_count']} | "
             f"Safe: {len(result['safe_emojis'])} | "
             f"ZWJ: {len(result['zwj_sequences'])} | "
             f"{safe_status}"
         )
-        console.text("")
+        lines.append("")
+
+    console.frame(
+        "\n".join(lines),
+        title=f"{EMOJI.SHIELD} Safety Analysis",
+        border="rounded",
+        border_color="red",
+    )
 
 
 def demo_shortcode_conversion():
@@ -240,12 +249,6 @@ def main():
     demo_emoji_info()
     console.text("")
 
-    console.frame(
-        "",
-        title=f"{EMOJI.SHIELD} Safety Analysis",
-        border="rounded",
-        border_color="red",
-    )
     demo_safety_analysis()
 
     demo_shortcode_conversion()

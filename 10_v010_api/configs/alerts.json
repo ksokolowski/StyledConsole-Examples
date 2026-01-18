@@ -1,0 +1,22 @@
+{
+  "templates": {
+    "critical": {
+      "frame": "${message}",
+      "title": "CRITICAL",
+      "effect": "fire",
+      "border": "double"
+    },
+    "warning": {
+      "frame": "${message}",
+      "title": "Warning",
+      "effect": "sunset",
+      "border": "heavy"
+    },
+    "info": {
+      "frame": "${message}",
+      "title": "Info",
+      "effect": "ocean",
+      "border": "rounded"
+    }
+  }
+}

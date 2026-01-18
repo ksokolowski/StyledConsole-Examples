@@ -1,0 +1,24 @@
+# Theme Configuration
+# Define reusable themes for your application
+
+themes:
+  light:
+    primary_effect: ocean
+    secondary_effect: steel
+    warning_effect: sunset
+    error_effect: fire
+    border_style: rounded
+
+  dark:
+    primary_effect: aurora
+    secondary_effect: steel
+    warning_effect: fire
+    error_effect: fire
+    border_style: heavy
+
+  cyberpunk:
+    primary_effect: neon
+    secondary_effect: rainbow
+    warning_effect: fire
+    error_effect: fire
+    border_style: double

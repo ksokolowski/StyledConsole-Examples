@@ -1,0 +1,39 @@
+# Alert Templates
+# Predefined alert styles for different severity levels
+
+templates:
+  info:
+    frame: "${message}"
+    title: "Info"
+    effect: ocean
+    border: rounded
+
+  success:
+    frame: "${message}"
+    title: "Success"
+    effect: ocean
+    border: rounded
+
+  warning:
+    frame: "${message}"
+    title: "Warning"
+    effect: sunset
+    border: heavy
+
+  error:
+    frame: "${message}"
+    title: "Error"
+    effect: fire
+    border: double
+
+  critical:
+    frame: |
+      CRITICAL ALERT
+
+      ${message}
+
+      Time: ${timestamp}
+      Source: ${source}
+    title: "CRITICAL"
+    effect: fire
+    border: double

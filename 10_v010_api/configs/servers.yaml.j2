@@ -1,0 +1,27 @@
+# Server Status Dashboard
+# This template generates a status panel for multiple servers
+
+type: layout
+direction: vertical
+gap: 1
+children:
+  - type: frame
+    title: "Server Fleet ({{ servers | length }} servers)"
+    effect: "{{ 'ocean' if all_healthy else 'sunset' }}"
+    content:
+      type: layout
+      direction: vertical
+      children:
+        {% for server in servers %}
+        - type: text
+          content: "{{ server.status | status_icon }} {{ server.name }} - {{ server.ip }} ({{ server.region }})"
+        {% endfor %}
+
+  - type: frame
+    title: "Summary"
+    effect: steel
+    content: |
+      Total: {{ servers | length }}
+      Healthy: {{ servers | selectattr('status', 'eq', 'running') | list | length }}
+      Degraded: {{ servers | selectattr('status', 'eq', 'degraded') | list | length }}
+      Down: {{ servers | selectattr('status', 'eq', 'stopped') | list | length }}
