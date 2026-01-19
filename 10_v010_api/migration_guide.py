@@ -232,13 +232,16 @@ console.newline()
 console.rule("[yellow]7. Tables[/]")
 console.newline()
 
-# CLASSIC: console.table
-console.text("[bold]Classic:[/]")
-console.table(
-    rows=[["Alice", "Admin"], ["Bob", "User"]],
-    columns=["Name", "Role"],
-    title="Users",
-)
+# CLASSIC: Use rich.table.Table via console.print()
+console.text("[bold]Classic (Rich Table):[/]")
+from rich.table import Table as RichTable
+
+classic_table = RichTable(title="Users")
+classic_table.add_column("Name")
+classic_table.add_column("Role")
+classic_table.add_row("Alice", "Admin")
+classic_table.add_row("Bob", "User")
+console.print(classic_table)
 console.newline()
 
 # NEW: TableBuilder
