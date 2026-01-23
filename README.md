@@ -2,15 +2,32 @@
 
 This repository is a visual laboratory for [StyledConsole](https://github.com/ksokolowski/StyledConsole). It demonstrates rich terminal features, advanced layouts, and best practices for creating beautiful command-line interfaces.
 
-**Latest Updates:**
+**Latest Updates (v0.2.0):**
+- ✅ Added CLI features example (`cli_features.py`)
+- ✅ Added JSON Schema example (`schema_example.py`)
+- ✅ v0.10.4 compatibility with CLI and JSON Schema support
+
+**Previous Updates:**
 - ✅ Added v0.10.0 API examples (`10_v010_api/` category)
 - ✅ Reorganized into 10 numbered categories
 - ✅ Updated to use modern `effect=` API (v0.10.0+)
 - ✅ Integrated 90 curated color palettes
 - ✅ Support for 1,347 color names (CSS4 + Rich + Extended)
-- ✅ Removed deprecated API usage
 
 ## 🚀 Getting Started
+
+### Try the CLI First (No Code Required!)
+
+StyledConsole v0.10.4 includes a CLI for exploring features:
+
+```bash
+pip install styledconsole
+
+styledconsole demo              # Interactive feature showcase
+styledconsole palette           # Browse 90 color palettes
+styledconsole effects fire      # Preview effect presets
+styledconsole icons rocket      # Search 200+ icons
+```
 
 ### Quick Start
 
@@ -96,7 +113,7 @@ StyledConsole-Examples/
     ├── visual_alignment.py
     └── visual_stress_test.py
 
-├── 10_v010_api/        # 🆕 v0.10 API Examples (12 examples)
+├── 10_v010_api/        # 🆕 v0.10 API Examples (14 examples)
 │   ├── builder_pattern.py     # FrameBuilder, BannerBuilder, TableBuilder
 │   ├── model_objects.py       # Frame, Text, Style, Layout models
 │   ├── declarative_syntax.py  # render_dict(), normalize(), shorthand
@@ -107,7 +124,9 @@ StyledConsole-Examples/
 │   ├── dynamic_ui.py          # Dynamic UI generation
 │   ├── mixed_workflows.py     # Combining approaches
 │   ├── migration_guide.py     # v0.9 to v0.10 migration
-│   └── config_dashboard.py    # Config-driven dashboard
+│   ├── config_dashboard.py    # Config-driven dashboard
+│   ├── cli_features.py        # CLI commands showcase (v0.10.4)
+│   └── schema_example.py      # JSON Schema for IDE autocomplete (v0.10.4)
 ```
 
 ## 📖 Key Examples
