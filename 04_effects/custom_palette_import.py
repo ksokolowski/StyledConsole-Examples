@@ -4,12 +4,12 @@ Demonstrates how to create custom effects from color palettes,
 using the unified 90-palette system.
 """
 
-from styledconsole import Console, EffectSpec, EFFECTS, PALETTES, get_palette
+from styledconsole import Console, EffectSpec, EFFECTS, PALETTES, get_palette, icons
 
 console = Console()
 
 print()
-console.text("🎨 CUSTOM PALETTE IMPORT", color="cyan", bold=True)
+console.text(f"{icons.ARTIST_PALETTE} CUSTOM PALETTE IMPORT", color="cyan", bold=True)
 print("=" * 80)
 print()
 
@@ -80,7 +80,7 @@ for name in all_palettes[:20]:
 print(f"  ... and {len(all_palettes) - 20} more! Total: {len(all_palettes)} palettes")
 print()
 
-console.text("✅ Custom palette import examples complete!", color="lime", bold=True)
+console.text(f"{icons.CHECK_MARK_BUTTON} Custom palette import examples complete!", color="lime", bold=True)
 console.text(
     "   Use EffectSpec.from_palette() or EFFECTS.load_palette() for any of 90 palettes!",
     color="white",

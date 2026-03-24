@@ -30,7 +30,7 @@ def main():
     # 1. NAMED EFFECT PRESETS
     # ==================================================================
     
-    console.text("🎨 1. Named Effect Presets", color="yellow", bold=True)
+    console.text(f"{icons.ARTIST_PALETTE} 1. Named Effect Presets", color="yellow", bold=True)
     console.text("   Use effect='preset_name' or EFFECTS.preset_name", color="dim")
     console.newline()
 
@@ -67,7 +67,7 @@ def main():
     # 2. CUSTOM GRADIENTS
     # ==================================================================
     
-    console.text("🌈 2. Custom Gradients with EffectSpec.gradient()", color="yellow", bold=True)
+    console.text(f"{icons.RAINBOW} 2. Custom Gradients with EffectSpec.gradient()", color="yellow", bold=True)
     console.text("   Create gradients with any start/end colors", color="dim")
     console.newline()
 
@@ -112,7 +112,7 @@ def main():
     # 3. MULTI-STOP GRADIENTS
     # ==================================================================
     
-    console.text("🎨 3. Multi-Stop Gradients", color="yellow", bold=True)
+    console.text(f"{icons.ARTIST_PALETTE} 3. Multi-Stop Gradients", color="yellow", bold=True)
     console.text("   Use 3+ colors for complex gradients", color="dim")
     console.newline()
 
@@ -148,7 +148,7 @@ def main():
     # 4. RAINBOW EFFECTS
     # ==================================================================
     
-    console.text("🌈 4. Rainbow Effects", color="yellow", bold=True)
+    console.text(f"{icons.RAINBOW} 4. Rainbow Effects", color="yellow", bold=True)
     console.text("   Full spectrum rainbow gradients", color="dim")
     console.newline()
 
@@ -197,7 +197,7 @@ def main():
     # 5. BORDER-ONLY PRESETS
     # ==================================================================
     
-    console.text("📦 5. Border-Only Presets", color="yellow", bold=True)
+    console.text(f"{icons.PACKAGE} 5. Border-Only Presets", color="yellow", bold=True)
     console.text("   Preset effects applied to borders only", color="dim")
     console.newline()
 
@@ -231,7 +231,7 @@ def main():
     # 6. BANNER EFFECTS
     # ==================================================================
     
-    console.text("🎪 6. Banner Effects", color="yellow", bold=True)
+    console.text(f"{icons.CIRCUS_TENT} 6. Banner Effects", color="yellow", bold=True)
     console.text("   Effects work on ASCII art banners too!", color="dim")
     console.newline()
 

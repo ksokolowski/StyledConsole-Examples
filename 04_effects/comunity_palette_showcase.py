@@ -4,12 +4,12 @@ Demonstrates the curated effect presets inspired by popular palettes
 from the community, organized by theme.
 """
 
-from styledconsole import Console, EFFECTS
+from styledconsole import Console, EFFECTS, icons
 
 console = Console()
 
 print()
-console.text("🎨 COMMUNITY INSPIRED PALETTES", color="cyan", bold=True)
+console.text(f"{icons.ARTIST_PALETTE} COMMUNITY INSPIRED PALETTES", color="cyan", bold=True)
 console.text("Popular color combinations from the community", color="white")
 print("=" * 80)
 print()
@@ -79,7 +79,7 @@ console.frame(
 print()
 
 # Tech & Cyber
-console.text("💻 TECH & CYBER", color="magenta", bold=True)
+console.text(f"{icons.LAPTOP} TECH & CYBER", color="magenta", bold=True)
 print("-" * 80)
 
 console.frame(
@@ -154,6 +154,6 @@ console.frame(
 )
 print()
 
-console.text("✅ Community palette showcase complete!", color="lime", bold=True)
+console.text(f"{icons.CHECK_MARK_BUTTON} Community palette showcase complete!", color="lime", bold=True)
 console.text(f"   Total available effects: {len(EFFECTS.list_all())}", color="white")
 print()

@@ -8,7 +8,7 @@ This pattern enables "Low Code" interface construction.
 NOTE: This example requires the experimental presets module which is under development.
 """
 
-from styledconsole import Console, EffectSpec
+from styledconsole import Console, EffectSpec, icons
 
 
 def run_demo():
@@ -28,8 +28,8 @@ def run_demo():
 
     # 2. Data section with frame
     system_status = [
-        "⚙️  Life Support:     NOMINAL",
-        "📡 Navigation:       CALIBRATING",
+        f"{icons.GEAR}  Life Support:     NOMINAL",
+        f"{icons.SATELLITE_ANTENNA} Navigation:       CALIBRATING",
         "🔋 Power Systems:    98%",
     ]
 
@@ -44,7 +44,7 @@ def run_demo():
 
     # 3. Alert panel
     console.frame(
-        "⚠ Proximity Warning: Asteroid Field Detected",
+        f"{icons.WARNING} Proximity Warning: Asteroid Field Detected",
         title="Alerts",
         border="rounded",
         border_color="red",

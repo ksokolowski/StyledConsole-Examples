@@ -7,12 +7,12 @@ Demonstrates the new effect= API for rainbow gradients:
 - EffectSpec.gradient(): Custom gradient effects
 """
 
-from styledconsole import Console, EFFECTS, EffectSpec
+from styledconsole import Console, EFFECTS, EffectSpec, icons
 
 console = Console()
 
 print()
-console.text("🌈 MODERN RAINBOW EFFECTS", color="cyan", bold=True)
+console.text(f"{icons.RAINBOW} MODERN RAINBOW EFFECTS", color="cyan", bold=True)
 print("=" * 80)
 print()
 
@@ -83,5 +83,5 @@ console.frame(
 )
 print()
 
-console.text("✅ Modern effect= API showcase complete!", color="lime", bold=True)
+console.text(f"{icons.CHECK_MARK_BUTTON} Modern effect= API showcase complete!", color="lime", bold=True)
 print()

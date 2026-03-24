@@ -12,7 +12,7 @@ For production progress bars, use Console.progress() instead.
 
 from io import StringIO
 
-from styledconsole import Console, cycle_phase
+from styledconsole import Console, cycle_phase, icons
 from styledconsole.animation import Animation
 from styledconsole.effects import EffectSpec
 
@@ -21,7 +21,7 @@ def create_animated_banner():
     """Demonstrate animated rainbow banner using phase parameter."""
     console = Console()
 
-    print("🎨 Animation Demo - Rainbow Banner")
+    print(f"{icons.ARTIST_PALETTE} Animation Demo - Rainbow Banner")
     print("=" * 50)
 
     # Generate frames by cycling phase through full cycle
@@ -40,7 +40,7 @@ def create_animated_banner():
                     "",
                     "Watch the colors cycle!",
                 ],
-                title="🚀 Animation Demo",
+                title=f"{icons.ROCKET} Animation Demo",
                 border="double",
                 width=40,
                 effect=EffectSpec.rainbow(phase=phase, direction="diagonal"),
@@ -56,7 +56,7 @@ def create_progress_animation():
     """Show animated progress-style display."""
     console = Console()
 
-    print("\n📊 Progress Animation Demo")
+    print(f"\n{icons.BAR_CHART} Progress Animation Demo")
     print("=" * 50)
 
     def frames():
@@ -82,7 +82,7 @@ def create_progress_animation():
 
             temp_console.frame(
                 content,
-                title="🔄 Task Progress",
+                title=f"{icons.COUNTERCLOCKWISE_ARROWS_BUTTON} Task Progress",
                 border="rounded",
                 border_color=color,
                 width=45,
@@ -107,7 +107,7 @@ def main():
     except KeyboardInterrupt:
         print("\nAnimation stopped.")
 
-    print("\n✅ Animation demo complete!")
+    print(f"\n{icons.CHECK_MARK_BUTTON} Animation demo complete!")
     print("Tip: Use Console.progress() for production progress bars.")
 
 

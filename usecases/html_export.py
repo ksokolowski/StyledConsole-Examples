@@ -9,7 +9,7 @@ Uses Console.export_html() facade - no internal API access needed.
 
 import os
 
-from styledconsole import Console, EffectSpec
+from styledconsole import Console, EffectSpec, icons
 
 
 def create_dashboard(console: Console) -> None:
@@ -25,10 +25,10 @@ def create_dashboard(console: Console) -> None:
 
     # 2. Status Grid
     metrics_lines = [
-        "CPU Load      42%        🟢",
-        "Memory        1.2GB      🟢",
-        "Disk          85%        ⚠️",
-        "Network       120ms      🔴",
+        f"CPU Load      42%        {icons.GREEN_CIRCLE}",
+        f"Memory        1.2GB      {icons.GREEN_CIRCLE}",
+        f"Disk          85%        {icons.WARNING}",
+        f"Network       120ms      {icons.RED_CIRCLE}",
     ]
 
     # 3. Framed Content with Metrics
@@ -83,7 +83,7 @@ def main():
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(html)
 
-    print(f"✅ Export complete! Open {output_file} in your browser.")
+    print(f"{icons.CHECK_MARK_BUTTON} Export complete! Open {output_file} in your browser.")
     print(f"File path: {os.path.abspath(output_file)}")
 
 

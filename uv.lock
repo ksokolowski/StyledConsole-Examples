@@ -235,7 +235,7 @@ wheels = [
 
 [[package]]
 name = "styledconsole"
-version = "0.10.2"
+version = "0.10.5"
 source = { editable = "../StyledConsole" }
 dependencies = [
     { name = "ansi2html" },
@@ -282,7 +282,7 @@ dev = [
 
 [[package]]
 name = "styledconsole-examples"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "jinja2" },
