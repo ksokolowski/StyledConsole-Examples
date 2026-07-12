@@ -8,7 +8,7 @@ Usage:
     python 07_showcases/dashboard_patterns.py
 """
 
-from styledconsole import Console, icons
+from styledconsole import Console, EffectSpec, icons
 
 console = Console()
 
@@ -131,8 +131,7 @@ Active Users: 1,234    Requests/min: 850    Errors: 12    Avg Response: 125ms
     """.strip(),
     title="Live Metrics",
     border="heavy",
-    border_gradient_start="cyan",
-    border_gradient_end="blue",
+    effect=EffectSpec.gradient("cyan", "blue", target="border"),
 )
 console.newline()
 

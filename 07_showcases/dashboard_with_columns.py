@@ -36,8 +36,7 @@ Total: 16 GB      Used: 12 GB      Free: 4 GB      Cache: 2 GB
     """.strip(),
     title="System Resources",
     border="double",
-    border_gradient_start="cyan",
-    border_gradient_end="blue",
+    effect=EffectSpec.gradient("cyan", "blue", target="border"),
     padding=2,
 )
 console.newline()

@@ -40,10 +40,30 @@ from pathlib import Path
 from typing import List
 
 
-def check_styledconsole_installed() -> bool:
-    """Check if styledconsole is installed and importable."""
+def check_styledconsole_installed(examples_root: Path) -> bool:
+    """Check styledconsole availability in the interpreter that will run examples.
+
+    Examples execute via `uv run --project ../StyledConsole` when the
+    library repo is present; importing in THIS interpreter said nothing
+    about that environment (false negatives with a clean system python,
+    false positives with a stale global install).
+    """
+    main_repo = examples_root.parent / "StyledConsole"
+    if main_repo.exists() and (main_repo / "pyproject.toml").exists():
+        try:
+            result = subprocess.run(
+                ["uv", "run", "--project", str(main_repo), "python", "-c", "import styledconsole"],
+                capture_output=True,
+                text=True,
+                cwd=examples_root,
+            )
+            return result.returncode == 0
+        except FileNotFoundError:
+            pass  # uv missing — fall through to local import check
+
     try:
-        import styledconsole
+        import styledconsole  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -96,80 +116,61 @@ class ExamplesRunner:
         self.examples_root = examples_root
         self.auto_mode = auto_mode
         self.results: List[ExampleResult] = []
+        self._run_start_time = time.time()
 
-        # Define categories with priority (lower = run first)
-        self.categories = [
-            ExampleCategory(
-                name="01_quickstart",
-                path=examples_root / "01_quickstart",
-                description="Getting Started - First steps with StyledConsole",
-                icon="🚀",
-                priority=1,
-            ),
-            ExampleCategory(
-                name="02_frames",
-                path=examples_root / "02_frames",
-                description="Frame System - Borders, Nesting, Margins, Styles",
-                icon="🖼️",
-                priority=2,
-            ),
-            ExampleCategory(
-                name="03_content",
-                path=examples_root / "03_content",
-                description="Content Elements - Tables, Text, Rules",
-                icon="📝",
-                priority=3,
-            ),
-            ExampleCategory(
-                name="04_effects",
-                path=examples_root / "04_effects",
-                description="Visual Effects - Gradients, Palettes, Animation",
-                icon="🌈",
-                priority=4,
-            ),
-            ExampleCategory(
-                name="05_banners",
-                path=examples_root / "05_banners",
-                description="ASCII Art Banners - Welcome Screens, Dashboards",
-                icon="🔤",
-                priority=5,
-            ),
-            ExampleCategory(
-                name="06_advanced",
-                path=examples_root / "06_advanced",
-                description="Advanced Features - Policies, JSON Layouts",
-                icon="⚙️",
-                priority=6,
-            ),
-            ExampleCategory(
-                name="07_showcases",
-                path=examples_root / "07_showcases",
-                description="Feature Showcases - Icons, Emoji, Progress",
-                icon="✨",
-                priority=7,
-            ),
-            ExampleCategory(
-                name="08_applications",
-                path=examples_root / "08_applications",
-                description="Real-World Applications - CLI Menus, Logs, Alerts",
-                icon="💼",
-                priority=8,
-            ),
-            ExampleCategory(
-                name="09_testing",
-                path=examples_root / "09_testing",
-                description="Testing & Validation - Benchmarks, Compatibility",
-                icon="🧪",
-                priority=9,
-            ),
-            ExampleCategory(
-                name="10_v010_api",
-                path=examples_root / "10_v010_api",
-                description="v0.10 API - Builder, Model, Renderer, Declarative",
-                icon="🆕",
-                priority=10,
-            ),
+        # Categories are discovered from disk (numbered dirs plus known
+        # extras) — a hardcoded list silently hid presets/, usecases/ and
+        # any newly added directory.
+        self.categories = self._discover_categories()
+
+    # Descriptions/icons for known directories; unknown ones get defaults.
+    KNOWN_CATEGORIES = {
+        "01_quickstart": ("Getting Started - First steps with StyledConsole", "🚀"),
+        "02_frames": ("Frame System - Borders, Nesting, Margins, Styles", "🖼️"),
+        "03_content": ("Content Elements - Tables, Text, Rules", "📝"),
+        "04_effects": ("Visual Effects - Gradients, Palettes, Animation", "🌈"),
+        "05_banners": ("ASCII Art Banners - Welcome Screens, Dashboards", "🔤"),
+        "06_advanced": ("Advanced Features - Policies, JSON Layouts", "⚙️"),
+        "07_showcases": ("Feature Showcases - Icons, Emoji, Progress", "✨"),
+        "08_applications": ("Real-World Applications - CLI Menus, Logs, Alerts", "💼"),
+        "09_testing": ("Testing & Validation - Benchmarks, Compatibility", "🧪"),
+        "10_v010_api": ("v0.10 API - Builder, Model, Renderer, Declarative", "🆕"),
+        "presets": ("Preset Components - Ready-made building blocks", "🧩"),
+        "usecases": ("Use Cases - Export and integration recipes", "📦"),
+        "validation": ("Validation - Visual verification scripts", "🔍"),
+    }
+    EXTRA_DIRS = ("presets", "usecases", "validation")
+
+    def _discover_categories(self) -> List[ExampleCategory]:
+        """Discover category directories on disk."""
+        import re as _re
+
+        numbered = sorted(
+            p
+            for p in self.examples_root.iterdir()
+            if p.is_dir() and _re.match(r"\d{2}_", p.name)
+        )
+        extras = [
+            self.examples_root / name
+            for name in self.EXTRA_DIRS
+            if (self.examples_root / name).is_dir()
         ]
+
+        categories = []
+        for priority, path in enumerate([*numbered, *extras], start=1):
+            description, icon = self.KNOWN_CATEGORIES.get(
+                path.name, ("Additional examples", "📁")
+            )
+            categories.append(
+                ExampleCategory(
+                    name=path.name,
+                    path=path,
+                    description=description,
+                    icon=icon,
+                    priority=priority,
+                )
+            )
+        return categories
 
     def list_categories(self) -> None:
         """Print available categories."""
@@ -215,6 +216,7 @@ class ExamplesRunner:
 
         # Run each category
         total_start_time = time.time()
+        self._run_start_time = total_start_time
 
         for i, category in enumerate(categories_to_run, 1):
             self._run_category(category, i, len(categories_to_run))
@@ -275,17 +277,19 @@ class ExamplesRunner:
             main_repo = self.examples_root.parent / "StyledConsole"
 
             if main_repo.exists() and (main_repo / "pyproject.toml").exists():
-                # Use uv run from the main repository context
-                result = subprocess.run(
-                    ["uv", "run", "python", str(example_path)],
+                # Use the library repo's environment, but run in the
+                # example's own directory so relative output paths land
+                # in the Examples repo, not the library repo.
+                subprocess.run(
+                    ["uv", "run", "--project", str(main_repo), "python", str(example_path)],
                     capture_output=False,
                     text=True,
                     check=True,
-                    cwd=main_repo,
+                    cwd=example_path.parent,
                 )
             else:
                 # Fallback to regular python execution
-                result = subprocess.run(
+                subprocess.run(
                     [sys.executable, str(example_path)],
                     capture_output=False,
                     text=True,
@@ -309,7 +313,7 @@ class ExamplesRunner:
 
         except KeyboardInterrupt:
             print("\n\n⚠️  Interrupted by user")
-            self._print_summary(time.time() - start_time, interrupted=True)
+            self._print_summary(time.time() - self._run_start_time, interrupted=True)
             sys.exit(0)
 
         except Exception as e:
@@ -336,7 +340,7 @@ class ExamplesRunner:
                 input("\n👉 Press Enter to continue to next example...")
             except KeyboardInterrupt:
                 print("\n\n⚠️  Interrupted by user")
-                self._print_summary(time.time() - start_time, interrupted=True)
+                self._print_summary(time.time() - self._run_start_time, interrupted=True)
                 sys.exit(0)
         elif not success and not self.auto_mode:
             try:
@@ -440,7 +444,7 @@ def main():
         return
 
     # Check if styledconsole is installed
-    if not check_styledconsole_installed():
+    if not check_styledconsole_installed(examples_root):
         print_installation_instructions()
         sys.exit(1)
 
