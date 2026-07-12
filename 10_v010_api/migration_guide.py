@@ -232,16 +232,19 @@ console.newline()
 console.rule("[yellow]7. Tables[/]")
 console.newline()
 
-# CLASSIC: Use rich.table.Table via console.print()
-console.text("[bold]Classic (Rich Table):[/]")
-from rich.table import Table as RichTable
+# CLASSIC: rich.table.Table — shown as a listing only. Examples never
+# import Rich directly (Console API rule); the code below is what you
+# would migrate FROM.
+console.text("[bold]Classic (Rich Table) — for comparison:[/]")
+classic_code = """from rich.table import Table
 
-classic_table = RichTable(title="Users")
-classic_table.add_column("Name")
-classic_table.add_column("Role")
-classic_table.add_row("Alice", "Admin")
-classic_table.add_row("Bob", "User")
-console.print(classic_table)
+table = Table(title="Users")
+table.add_column("Name")
+table.add_column("Role")
+table.add_row("Alice", "Admin")
+table.add_row("Bob", "User")
+console.print(table)"""
+console.frame(classic_code, title="Before: raw Rich", border="rounded")
 console.newline()
 
 # NEW: TableBuilder

@@ -62,8 +62,10 @@ def run_demo():
         # Force a policy with all features enabled for the animation buffer
         anim_policy = RenderPolicy(color=True, unicode=True, emoji=True)
         
-        # Get actual width for centering the animation frames
-        target_width = console._rich_console.width
+        # Get actual width for centering the animation frames (public API;
+        # never reach into console internals)
+        profile = console.terminal_profile
+        target_width = profile.width if profile else 80
 
         for _ in range(60):
             buffer = StringIO()
