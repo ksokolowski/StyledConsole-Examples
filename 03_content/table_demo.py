@@ -15,7 +15,18 @@ from styledconsole.table import StyledTable
 def demonstrate_table(console: Console, policy: RenderPolicy, title: str) -> None:
     """Helper to render a table with a specific policy."""
     console.print(f"\n[bold cyan]=== {title} ===[/]")
-    console.print(f"[dim]Policy: unicode={policy.unicode}, emoji={policy.emoji}[/]\n")
+    console.print(f"[dim]Policy: unicode={policy.unicode}, emoji={policy.emoji}[/]")
+
+    # These scenarios force explicit policies to SIMULATE other
+    # environments; when a scenario enables more than the detected
+    # terminal supports, its rendering may legitimately look off here.
+    detected = RenderPolicy.from_env()
+    if (policy.emoji and not detected.emoji) or (policy.unicode and not detected.unicode):
+        console.print(
+            "[dim italic]note: simulated environment — this scenario forces "
+            "capabilities your terminal may not render faithfully[/]"
+        )
+    console.print()
 
     table = StyledTable(
         title=f"{icons.GLOBE_WITH_MERIDIANS} Server Cluster Status",

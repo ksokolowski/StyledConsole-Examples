@@ -84,6 +84,101 @@ def collect_emoji_from_sources() -> dict[str, list[str]]:
     return found
 
 
+BLOCK_OPEN = "╭┌╔+"
+BLOCK_CLOSE = "╰└╚"
+
+
+def check_rendered_blocks(output: str) -> list[tuple[int, list[int]]]:
+    """Find bordered blocks in captured output; return misaligned ones.
+
+    A block starts at a top-border line (corner char after optional
+    indent), collects lines until the matching bottom border, and every
+    line in between must have the same VTE-rendered width. Content that
+    never forms a well-formed block (animations, partial redraws) is
+    ignored rather than guessed at.
+
+    Returns:
+        List of (starting line number, sorted distinct widths) for each
+        misaligned block.
+    """
+    failures: list[tuple[int, list[int]]] = []
+    lines = output.replace("\r", "\n").splitlines()
+
+    block_start = None
+    block_widths: set[int] = set()
+    ascii_open = False
+
+    for lineno, raw in enumerate(lines, 1):
+        line = strip_ansi(raw)
+        stripped = line.strip()
+        if not stripped:
+            continue
+        first = stripped[0]
+
+        in_block = block_start is not None
+
+        if not in_block:
+            if first in BLOCK_OPEN and len(stripped) > 2:
+                block_start = lineno
+                block_widths = {vte_render_width(line)}
+                ascii_open = first == "+"
+            continue
+
+        block_widths.add(vte_render_width(line))
+        closes = first in BLOCK_CLOSE or (ascii_open and first == "+")
+        if closes:
+            if len(block_widths) > 1:
+                failures.append((block_start, sorted(block_widths)))
+            block_start = None
+            block_widths = set()
+            ascii_open = False
+
+    return failures
+
+
+def run_examples_full_output() -> list[tuple[str, list[tuple[int, list[int]]]]]:
+    """Run every example under the simulated VTE env; validate all blocks."""
+    import subprocess
+
+    env = dict(os.environ)
+    env["COLUMNS"] = "200"
+    env["PYTHONIOENCODING"] = "utf-8"
+
+    failures: list[tuple[str, list[tuple[int, list[int]]]]] = []
+    example_files = sorted(
+        p
+        for p in EXAMPLES_ROOT.rglob("*.py")
+        if ".venv" not in p.parts
+        and p.name not in ("run_examples.py", Path(__file__).name)
+        and not p.name.startswith("_")
+        and p.parent != EXAMPLES_ROOT
+    )
+
+    print(f"Running {len(example_files)} examples with full-output validation...")
+    for path in example_files:
+        rel = str(path.relative_to(EXAMPLES_ROOT))
+        try:
+            proc = subprocess.run(
+                [sys.executable, str(path)],
+                capture_output=True,
+                text=True,
+                timeout=90,
+                env=env,
+                cwd=path.parent,
+            )
+        except subprocess.TimeoutExpired:
+            print(f"   ⏭️  {rel}: timeout, skipped")
+            continue
+        if proc.returncode != 0:
+            print(f"   ⏭️  {rel}: exited {proc.returncode}, skipped")
+            continue
+        bad_blocks = check_rendered_blocks(proc.stdout)
+        if bad_blocks:
+            failures.append((rel, bad_blocks))
+
+    return failures
+
+
 def main() -> int:
     from styledconsole.utils.text import _current_width_mode
 
@@ -137,7 +232,17 @@ def main() -> int:
     if width_mismatches or frame_failures:
         return 1
 
-    print("\n🎉 Every emoji used by the examples renders aligned under VTE")
+    print("\n--- Full-output validation (every example, every bordered block) ---")
+    example_failures = run_examples_full_output()
+    if example_failures:
+        print(f"\n❌ EXAMPLES WITH MISALIGNED BLOCKS ({len(example_failures)}):")
+        for rel, blocks in example_failures:
+            for start, widths in blocks[:3]:
+                print(f"   {rel}: block at line {start}, widths {widths}")
+        return 1
+
+    print("\n🎉 Every emoji corpus entry AND every example's rendered output")
+    print("   is aligned under the VTE width model")
     return 0
 
 
