@@ -155,16 +155,23 @@ def run_examples_full_output() -> list[tuple[str, list[tuple[int, list[int]]]]]:
     )
 
     print(f"Running {len(example_files)} examples with full-output validation...")
-    for path in example_files:
+    for i, path in enumerate(example_files, 1):
         rel = str(path.relative_to(EXAMPLES_ROOT))
+        print(f"   [{i}/{len(example_files)}] {rel}", flush=True)
         try:
+            # stdin=DEVNULL is load-bearing: examples that read stdin
+            # (interactive pauses, cursor-position queries answered by
+            # the TTY) would otherwise block forever when this validator
+            # runs from an interactive terminal with their prompts
+            # swallowed by capture_output.
             proc = subprocess.run(
                 [sys.executable, str(path)],
                 capture_output=True,
                 text=True,
-                timeout=90,
+                timeout=45,
                 env=env,
                 cwd=path.parent,
+                stdin=subprocess.DEVNULL,
             )
         except subprocess.TimeoutExpired:
             print(f"   ⏭️  {rel}: timeout, skipped")
