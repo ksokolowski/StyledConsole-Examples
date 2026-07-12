@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 StyledConsole-Examples is the visual laboratory for the StyledConsole ecosystem - a gallery of examples demonstrating terminal formatting, layouts, and best practices.
 
 **Part of:** StyledConsole Ecosystem (see `../CLAUDE.md` for ecosystem overview)
-**Depends on:** styledconsole>=0.9.9.5
+**Depends on:** styledconsole (editable path dependency on `../StyledConsole`, currently v0.11.0)
 
 ## Commands
 
@@ -31,6 +31,7 @@ make advanced           # 06_advanced examples
 make showcases          # 07_showcases examples
 make applications       # 08_applications examples
 make testing            # 09_testing examples
+make v010               # 10_v010_api examples
 
 # Single Example
 python 01_quickstart/hello_frame.py
@@ -50,6 +51,10 @@ python 04_effects/animation.py
 | `07_showcases/` | Feature demos (emoji, icons, progress) |
 | `08_applications/` | Real-world use cases (alerts, menus, logs) |
 | `09_testing/` | Validation and stress tests |
+| `10_v010_api/` | v0.10 API: builders, model objects, declarative, templates |
+| `presets/` | Preset components (GradientTable etc.) |
+| `usecases/` | Export and integration recipes |
+| `validation/` | Visual verification scripts |
 
 ## Critical Rules
 
@@ -84,8 +89,9 @@ console._rich_console.print(...)
 # WRONG: Tuple for gradient
 console.frame(..., border_color=("red", "blue"))  # Crashes!
 
-# DEPRECATED: Legacy gradient args (still works but prefer effect=)
+# DEPRECATED on frame()/banner(): legacy gradient args (still work but prefer effect=)
 console.frame(..., border_gradient_start="red", border_gradient_end="blue")
+# Note: frame_group() still uses border_gradient_start/end as its current API
 
 # CORRECT: Use effect parameter
 console.frame(..., effect=EffectSpec.gradient("red", "blue", target="border"))

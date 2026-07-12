@@ -2,10 +2,12 @@
 
 This repository is a visual laboratory for [StyledConsole](https://github.com/ksokolowski/StyledConsole). It demonstrates rich terminal features, advanced layouts, and best practices for creating beautiful command-line interfaces.
 
-**Latest Updates (v0.2.0):**
+**Latest Updates:**
+- ✅ v0.11.0 compatibility — code-review remediation release
+- ✅ Dynamic category discovery (presets/, usecases/, validation/ now included)
+- ✅ Benchmarks and alignment validation exercise the public Console API
 - ✅ Added CLI features example (`cli_features.py`)
 - ✅ Added JSON Schema example (`schema_example.py`)
-- ✅ v0.10.4 compatibility with CLI and JSON Schema support
 
 **Previous Updates:**
 - ✅ Added v0.10.0 API examples (`10_v010_api/` category)
@@ -18,7 +20,7 @@ This repository is a visual laboratory for [StyledConsole](https://github.com/ks
 
 ### Try the CLI First (No Code Required!)
 
-StyledConsole v0.10.4 includes a CLI for exploring features:
+StyledConsole v0.11.0 includes a CLI for exploring features:
 
 ```bash
 pip install styledconsole
@@ -106,13 +108,13 @@ StyledConsole-Examples/
 │   ├── progress_dashboard.py
 │   └── status_panels.py
 │
-└── 09_testing/         # 🧪 Testing & Validation (17 examples)
-    ├── benchmark.py
-    ├── emoji_comparison.py
-    ├── test_*.py (various tests)
-    ├── visual_alignment.py
-    └── visual_stress_test.py
-
+├── 09_testing/         # 🧪 Testing & Validation (17 examples)
+│   ├── benchmark.py
+│   ├── emoji_comparison.py
+│   ├── test_*.py (various tests)
+│   ├── visual_alignment.py
+│   └── visual_stress_test.py
+│
 ├── 10_v010_api/        # 🆕 v0.10 API Examples (14 examples)
 │   ├── builder_pattern.py     # FrameBuilder, BannerBuilder, TableBuilder
 │   ├── model_objects.py       # Frame, Text, Style, Layout models
@@ -125,8 +127,12 @@ StyledConsole-Examples/
 │   ├── mixed_workflows.py     # Combining approaches
 │   ├── migration_guide.py     # v0.9 to v0.10 migration
 │   ├── config_dashboard.py    # Config-driven dashboard
-│   ├── cli_features.py        # CLI commands showcase (v0.10.4)
-│   └── schema_example.py      # JSON Schema for IDE autocomplete (v0.10.4)
+│   ├── cli_features.py        # CLI commands showcase
+│   └── schema_example.py      # JSON Schema for IDE autocomplete
+│
+├── presets/            # 🧩 Preset components
+├── usecases/           # 📦 Export and integration recipes
+└── validation/         # 🔍 Visual verification scripts
 ```
 
 ## 📖 Key Examples
